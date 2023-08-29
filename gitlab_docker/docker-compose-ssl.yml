@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  web:
+    image: 'gitlab/gitlab-ce:15.3.3-ce.0'
+    restart: always
+    hostname: 'DOMAIN.COM'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://DOMAIN.COM:443'
+        nginx['listen_port'] = 443
+        nginx['redirect_http_to_https'] = true
+        nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/DOMAIN.COM.crt"
+        nginx['ssl_certificate_key'] = "/etc/ssl/certs/DOMAIN.COM.key"
+        nginx['ssl_protocols'] = "TLSv1.1 TLSv1.2"
+        nginx['logrotate_frequency'] = "weekly"
+        nginx['logrotate_rotate'] = 52
+        nginx['logrotate_compress'] = "compress"
+        nginx['logrotate_method'] = "copytruncate"
+        nginx['logrotate_delaycompress'] = "delaycompress"
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+      - '/etc/ssl/certs/gitlab:/etc/gitlab/ssl'
+    shm_size: '256m'
