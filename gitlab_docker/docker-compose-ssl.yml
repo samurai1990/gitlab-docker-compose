@@ -7,10 +7,11 @@ services:
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://DOMAIN.COM:443'
+        letsencrypt['enable'] = false
         nginx['listen_port'] = 443
         nginx['redirect_http_to_https'] = true
-        nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/DOMAIN.COM.crt"
-        nginx['ssl_certificate_key'] = "/etc/ssl/certs/DOMAIN.COM.key"
+        nginx['ssl_certificate'] = "/etc/gitlab/ssl/DOMAIN.COM.crt"
+        nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/DOMAIN.COM.key"
         nginx['ssl_protocols'] = "TLSv1.1 TLSv1.2"
         nginx['logrotate_frequency'] = "weekly"
         nginx['logrotate_rotate'] = 52
